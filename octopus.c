@@ -103,13 +103,13 @@ void TaskManagerStateMachineInit(void)
     //LOG_NONE("\r\n######################################BOOT  START######################################\r\n");
     TaskManagerStateStopRunning();
 #endif
-    LOG_LEVEL("OTMS task_id :%02x initializing...\r\n", TaskManagerStateMachine_Id_);
+    LOG_LEVEL("OTMS bootloader:%02x initializing...\r\n", TaskManagerStateMachine_Id_);
     //LOG_LEVEL("OTMS datetime:%s\r\n", OTMS_RELEASE_DATA_TIME);
     //LOG_LEVEL("OTMS version :%s app version:%s\r\n", OTMS_VERSION, APP_VER_STR);
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // Initialize hardware abstraction layers (HAL)
-    hal_gpio_init(0); // Initialize GPIO
+    //hal_gpio_init(0); // Initialize GPIO
 #ifdef TASK_MANAGER_STATE_MACHINE_SIF
     hal_timer_init(5); // Initialize timer with interval of 5 (could be milliseconds)
 #endif

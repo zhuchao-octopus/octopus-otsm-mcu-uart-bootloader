@@ -80,18 +80,7 @@
   */
  typedef enum {
 		TASK_ID_PTL_1 = 0, /**< Protocol handling task. */
-		TASK_ID_PTL_2, /**< Protocol handling task. */
-		TASK_ID_SYSTEM,        /**< System task. */
-		TASK_ID_GPIO,          /**< GPIO task. */
-		TASK_ID_CAR_INFOR,     /**< Car information. */
-		TASK_ID_BLE,           /**< BLE communication. */
-		TASK_ID_KEY,           /**< Key input. */
 		TASK_ID_UPDATE_MCU,    /**< MCU firmware update. */
-		TASK_ID_UPDATE_SOC,    /**< SOC firmware update. */
-		TASK_ID_CAN,
-		TASK_ID_PTL_BAFANG,
-		TASK_ID_IPC_SOCKET,    /**< IPC socket service. */
-
 		TASK_ID_MAX_NUM        /**< Total number of tasks. */
  } TaskModule_t;
  

@@ -29,13 +29,9 @@
  #include "octopus_tickcounter.h"    // Timer and tick counter management
  #include "octopus_msgqueue.h" // Message queue for inter-task communication
  #include "octopus_log.h"            // Octopus-specific logging utilities
-
- #include "octopus_timer_hal.h"      // Hardware Abstraction Layer (HAL) for timers
  #include "octopus_uart_hal.h" // HAL for UART communication
  #include "octopus_gpio_hal.h"       // HAL for GPIO (General-Purpose Input/Output)
  #include "octopus_flash_hal.h" // HAL for flash memory management
- #include "octopus_key.h"            // Key input handling and processing
-
 
 #ifdef __cplusplus
 extern "C"

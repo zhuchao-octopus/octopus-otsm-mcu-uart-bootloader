@@ -31,7 +31,6 @@
 #include "octopus_tickcounter.h"  // Include tick counter for timing operations
 #include "octopus_msgqueue.h"     // Include message queue for inter-task communication
 #include "octopus_flash.h"        // Include flash memory access functions
-#include "octopus_key.h"          // Include key status and event handling
 
 #ifdef TASK_MANAGER_STATE_MACHINE_GPIO
 /*******************************************************************************
@@ -53,14 +52,14 @@ static uint32_t l_t_msg_wait_50_timer;
  * GLOBAL VARIABLES
  */
 
-GPIO_STATUS acc_status = {false, true, 0, 0};
-GPIO_STATUS ddd_status = {false, true, 0, 0};
-GPIO_STATUS zzd_status = {false, true, 0, 0};
-GPIO_STATUS yzd_status = {false, true, 0, 0};
-GPIO_STATUS skd_status = {false, true, 0, 0};
+//GPIO_STATUS acc_status = {false, true, 0, 0};
+//GPIO_STATUS ddd_status = {false, true, 0, 0};
+//GPIO_STATUS zzd_status = {false, true, 0, 0};
+//GPIO_STATUS yzd_status = {false, true, 0, 0};
+//GPIO_STATUS skd_status = {false, true, 0, 0};
 
-GPIO_KEY_STATUS key_status_power = {OCTOPUS_KEY_POWER, 0};
-GPIO_KEY_STATUS *gpio_key_array[] = {&key_status_power};
+//GPIO_KEY_STATUS key_status_power = {OCTOPUS_KEY_POWER, 0};
+//GPIO_KEY_STATUS *gpio_key_array[] = {&key_status_power};
 // static bool module_send_handler(ptl_frame_type_t frame_type, ptl_frame_cmd_t cmd, uint16_t param, ptl_proc_buff_t *buff);
 // static bool module_receive_handler(ptl_frame_payload_t *payload, ptl_proc_buff_t *ackbuff);
 
