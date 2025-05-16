@@ -21,8 +21,8 @@
  * INCLUDES
  */
 #include "octopus_task_manager.h" // Include task manager for scheduling tasks
-#include "octopus_log.h"          // Include logging functions for debugging
 #include "octopus_gpio.h"
+#include "octopus_key.h"
 #include "octopus_update_mcu.h"
 #include "octopus_uart_ptl_1.h"    // Include UART protocol header
 /*******************************************************************************
@@ -54,6 +54,32 @@ const static otms_t lat_otms_config[TASK_ID_MAX_NUM] = {
             [OTMS_S_STOP] = ptl_stop_running,
         },
     },
+   #ifdef TASK_MANAGER_STATE_MACHINE_GPIO
+    [TASK_ID_GPIO] = {
+        .state_limit = OTMS_S_INVALID,
+        .func = {
+            [OTMS_S_INIT] = app_gpio_init_running,
+            [OTMS_S_START] = app_gpio_start_running,
+            [OTMS_S_ASSERT_RUN] = app_gpio_assert_running,
+            [OTMS_S_RUNNING] = app_gpio_running,
+            [OTMS_S_POST_RUN] = app_gpio_post_running,
+            [OTMS_S_STOP] = app_gpio_stop_running,
+        },
+    },
+    #endif
+#ifdef TASK_MANAGER_STATE_MACHINE_KEY
+    [TASK_ID_KEY] = {
+        .state_limit = OTMS_S_INVALID,
+        .func = {
+            [OTMS_S_INIT] = app_key_init_running,
+            [OTMS_S_START] = app_key_start_running,
+            [OTMS_S_ASSERT_RUN] = app_key_assert_running,
+            [OTMS_S_RUNNING] = app_key_running,
+            [OTMS_S_POST_RUN] = app_key_post_running,
+            [OTMS_S_STOP] = app_key_stop_running,
+        },
+    },
+#endif
     [TASK_ID_UPDATE_MCU] = {
         .state_limit = OTMS_S_INVALID,
         .func = {

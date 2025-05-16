@@ -20,10 +20,7 @@
  * INCLUDES
  */
 #include "octopus_platform.h" // Include platform-specific header for hardware platform details
-
-#include "octopus_task_manager.h" // Include task manager for scheduling tasks
-#include "octopus_tickcounter.h"
-#include "octopus_log.h" // Include logging functions for debugging
+#include "octopus_flash.h"
 #include "octopus.h"
 
 /*******************************************************************************
@@ -84,7 +81,7 @@ uint8_t GetTaskManagerStateMachineId(void)
  */
 void TaskManagerStateMachineInit(void)
 {
-    LOG_NONE("---------------------------------------------------------------------------\r\n");
+    LOG_NONE("----------------------------------------------------------------------------------\r\n");
     LOG_NONE("               _____                                 \r\n");
     LOG_NONE(" ______ _________  /_______ ________ ____  __________\r\n");
     LOG_NONE(" _  __ \\_  ___/_  __/_  __ \\___  __ \\_  / / /__  ___/\r\n");
@@ -95,15 +92,16 @@ void TaskManagerStateMachineInit(void)
 
     LOG_NONE(" Firmware  : v1.0.0\r\n");
     LOG_NONE(" Compiled  : %s %s\r\n", __DATE__, __TIME__);
+	  LOG_NONE(" Module    : Bootloader r\n");
     LOG_NONE(" Author    : Octopus Dev Team\r\n");
-    LOG_NONE("---------------------------------------------------------------------------\r\n");
+    LOG_NONE("----------------------------------------------------------------------------------\r\n");
     TaskManagerStateMachine_Id_ = 0; // Store the task ID in the global variable
     /// LOG_NONE("\r\n\r\n");//[1B blob data]
 #ifdef TASK_MANAGER_STATE_MACHINE_SOC
     //LOG_NONE("\r\n######################################BOOT  START######################################\r\n");
     TaskManagerStateStopRunning();
 #endif
-    LOG_LEVEL("OTMS bootloader:%02x initializing...\r\n", TaskManagerStateMachine_Id_);
+    LOG_LEVEL("OTMS bootloader: initializing...\r\n");
     //LOG_LEVEL("OTMS datetime:%s\r\n", OTMS_RELEASE_DATA_TIME);
     //LOG_LEVEL("OTMS version :%s app version:%s\r\n", OTMS_VERSION, APP_VER_STR);
 
@@ -113,8 +111,8 @@ void TaskManagerStateMachineInit(void)
 #ifdef TASK_MANAGER_STATE_MACHINE_SIF
     hal_timer_init(5); // Initialize timer with interval of 5 (could be milliseconds)
 #endif
-    hal_flash_init(0);
-    hal_uart_init(0); // Initialize UART communication protocol
+    flash_init();
+    uart_init(); // Initialize UART communication protocol
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // Initialize the necessary modules
@@ -148,9 +146,10 @@ void TaskManagerStateMachineInit(void)
 #if defined(PLATFORM_ITE_OPEN_RTOS) || defined(PLATFORM_LINUX_RISC)
     TaskManagerStateGoRunning();
 #endif
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    //LOG_NONE("#####################################BOOT COMPLETE#####################################\r\n");
-	 LOG_NONE("---------------------------------------------------------------------------\r\n");
+   /////////////////////////////////////////////////////////////////////////////////////////////////////
+   //LOG_NONE("#####################################BOOT COMPLETE#####################################\r\n");
+	 LOG_NONE("----------------------------------------------------------------------------------\r\n");
+	 flash_print_user_data_infor();
 }
 
 void exit_cleanup()
