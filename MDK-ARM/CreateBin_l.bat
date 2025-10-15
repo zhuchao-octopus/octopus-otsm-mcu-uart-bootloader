@@ -38,7 +38,7 @@ set index=1
 :check_exists
 set "padded=00!index!"
 set "padded=!padded:~-3!"
-set "OUT_BASE=MCU_%timestamp%_!padded!"
+set "OUT_BASE=.\BINS\MCU_%timestamp%_!padded!"
 
 if exist "!OUT_BASE!%slot%%hex_ext%" (
     set /a index+=1

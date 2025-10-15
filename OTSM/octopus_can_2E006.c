@@ -7,6 +7,7 @@
 #include "octopus_msgqueue.h"    // Message Queue: API for sending/receiving messages between tasks
 #include "octopus_uart_ptl.h"    // UART Protocol Layer: handles protocol-level UART operations
 #include "octopus_uart_upf.h"
+#include "octopus_can.h"
 
 #ifdef CUSTOMER_MODEL_CA_500
 
