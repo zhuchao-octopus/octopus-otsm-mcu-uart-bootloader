@@ -108,18 +108,36 @@ int main(void)
 	SYS_Config();
 	RCC_Config();
 	GPIO_Config();
-	ADC_Config();
-	TIM2_Config();
-	#ifdef FLASH_USE_EEROM_FOR_DATA_SAVING
-	EEPROM_Init();
-	#endif
-
-	UART1_Config_IRQ();
-	UART2_Config_IRQ();
-	UART3_Config_IRQ();
-	UART4_Config_IRQ();
-	LPUART_WakeStop_Config();
 	
+#ifdef HARDWARE_BSP_ADC_CHANNEL_8	
+	ADC_Channel_8_Config();
+#endif	
+	
+#ifdef HARDWARE_BSP_TIMER_2	
+	TIM2_Config();
+#endif
+	
+#ifdef FLASH_USE_EEROM_FOR_DATA_SAVING
+	EEPROM_Init();
+#endif
+	
+#ifdef HARDWARE_BSP_UART_1
+	UART1_Config_IRQ();
+#endif	
+#ifdef HARDWARE_BSP_UART_2
+	UART2_Config_IRQ();
+#endif
+#ifdef HARDWARE_BSP_UART_3
+	UART3_Config_IRQ();
+#endif
+#ifdef HARDWARE_BSP_UART_4
+	UART4_Config_IRQ();
+#endif
+
+#ifdef HARDWARE_BSP_LUART_1
+	LPUART_WakeStop_Config();
+#endif
+
 #ifdef TASK_MANAGER_STATE_MACHINE_CAN
 	CAN_Config();
 #endif
@@ -141,9 +159,9 @@ int main(void)
 	StartTickCounter(&l_t_msg_wait_60000_timer);
   
 	#ifdef TASK_MANAGER_STATE_MACHINE_SIF
-	LOG_LEVEL("start test sif_delay_50_us\r\n");
-	sif_delay_50_us(1000);
-	LOG_LEVEL("end test sif_delay_50_us\r\n");
+	//LOG_LEVEL("start test sif_delay_50_us %u\r\n",system_timer_tick_50us);
+	sif_delay_50_us(1000*1000);
+	//LOG_LEVEL("ended test sif_delay_50_us %u\r\n",system_timer_tick_50us);
 	#else
 	Delay_MS_(100);
 	#endif
