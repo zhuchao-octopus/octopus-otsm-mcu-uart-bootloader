@@ -217,7 +217,7 @@ bool meter_module_send_handler(ptl_frame_type_t frame_type, uint16_t param1, uin
                 ptl_build_frame(MCU_TO_SOC_MOD_CARINFOR, FRAME_CMD_CARINFOR_ERROR, (uint8_t *)&car_error_code_flags, sizeof(CarErrorCodeFlags_t), buff);
             else
 #endif
-			ptl_build_frame(MCU_TO_SOC_MOD_CARINFOR, FRAME_CMD_CARINFOR_ERROR, (uint8_t *)&lt_carinfo_error, sizeof(carinfo_error_t), buff);
+                ptl_build_frame(MCU_TO_SOC_MOD_CARINFOR, FRAME_CMD_CARINFOR_ERROR, (uint8_t *)&lt_carinfo_error, sizeof(carinfo_error_t), buff);
 
             return true;
         default:

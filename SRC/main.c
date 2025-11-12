@@ -21,7 +21,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /* Private function prototypes -----------------------------------------------*/
 
-//#define WATCH_DOG_ENABLE
+// #define WATCH_DOG_ENABLE
 
 static uint32_t l_t_msg_wait_60000_timer = 0; // Timer for 1 minu message wait
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,34 +102,37 @@ int main(void)
 {
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	flash_vector_table_config(FLASH_BANK_CONFIG_MODE_BANK,FLASH_BANK_CONFIG_MODE_SLOT,FLASH_ROM_BASE_ADDRESS, FLASH_MAPPING_VECT_TABLE_TO_SRAM);
+	flash_vector_table_config(FLASH_BANK_CONFIG_MODE_BANK, FLASH_BANK_CONFIG_MODE_SLOT, FLASH_ROM_BASE_ADDRESS, FLASH_MAPPING_VECT_TABLE_TO_SRAM);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	SYS_Config();
 	RCC_Config();
 	GPIO_Config();
-	
-#ifdef HARDWARE_BSP_ADC_CHANNEL_8	
+
+#ifdef HARDWARE_BSP_ADC_CHANNEL_8
 	ADC_Channel_8_Config();
-#endif	
-	
-#ifdef HARDWARE_BSP_TIMER_2	
+#endif
+
+#ifdef HARDWARE_BSP_TIMER_2
 	TIM2_Config();
 #endif
-	
+
 #ifdef FLASH_USE_EEROM_FOR_DATA_SAVING
 	EEPROM_Init();
 #endif
-	
+
 #ifdef HARDWARE_BSP_UART_1
 	UART1_Config_IRQ();
-#endif	
+#endif
+
 #ifdef HARDWARE_BSP_UART_2
 	UART2_Config_IRQ();
 #endif
+
 #ifdef HARDWARE_BSP_UART_3
 	UART3_Config_IRQ();
 #endif
+
 #ifdef HARDWARE_BSP_UART_4
 	UART4_Config_IRQ();
 #endif
@@ -141,7 +144,7 @@ int main(void)
 #ifdef TASK_MANAGER_STATE_MACHINE_CAN
 	CAN_Config();
 #endif
-	
+
 #ifdef WATCH_DOG_ENABLE
 	IWDG_Init(IWDG_Prescaler_256, 2342); // 15 seconds timeout
 #endif
@@ -153,18 +156,18 @@ int main(void)
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	dbg_log_set_channel(TASK_MANAGER_STATE_MACHINE_LOG_CHANNEL);
-	flash_loader_active_user_app(FLASH_BANK_CONFIG_MODE_SLOT,__DATE__, __TIME__);
-		
+	flash_loader_active_user_app(FLASH_BANK_CONFIG_MODE_SLOT, __DATE__, __TIME__);
+
 	TaskManagerStateMachineInit();
 	StartTickCounter(&l_t_msg_wait_60000_timer);
-  
-	#ifdef TASK_MANAGER_STATE_MACHINE_SIF
-	//LOG_LEVEL("start test sif_delay_50_us %u\r\n",system_timer_tick_50us);
-	sif_delay_50_us(1000*1000);
-	//LOG_LEVEL("ended test sif_delay_50_us %u\r\n",system_timer_tick_50us);
-	#else
+
+#ifdef TASK_MANAGER_STATE_MACHINE_SIF
+	// LOG_LEVEL("start test sif_delay_50_us %u\r\n",system_timer_tick_50us);
+	sif_delay_50_us(1000 * 1000);
+	// LOG_LEVEL("ended test sif_delay_50_us %u\r\n",system_timer_tick_50us);
+#else
 	Delay_MS_(100);
-	#endif
+#endif
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	while (1)
 	{
@@ -173,9 +176,9 @@ int main(void)
 		{
 #ifdef TASK_MANAGER_STATE_MACHINE_CARINFOR
 			LOG_LEVEL("tms voltage=%d,current=%d,trip_odo=%d,power=%d,soc=%d,range=%d,range_max=%d\r\n",
-			lt_carinfo_battery.voltage, lt_carinfo_battery.current, lt_carinfo_meter.trip_odo,
-			lt_carinfo_battery.power, lt_carinfo_battery.soc,
-			lt_carinfo_battery.range, lt_carinfo_battery.range_max);
+					  lt_carinfo_battery.voltage, lt_carinfo_battery.current, lt_carinfo_meter.trip_odo,
+					  lt_carinfo_battery.power, lt_carinfo_battery.soc,
+					  lt_carinfo_battery.range, lt_carinfo_battery.range_max);
 #else
 			LOG_LEVEL("task manager state machine loop %d/%d\r\n", counter, l_t_msg_wait_60000_timer); // Log unhandled events
 #endif

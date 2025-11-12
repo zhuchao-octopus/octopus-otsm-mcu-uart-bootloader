@@ -134,7 +134,7 @@ bool can_message_dispatcher(const CanQueueMsg_t *queue_msg)
       if (dlc >= 4) /* need at least bytes 0..3 present */
       {
          int16_t cur_raw = be_i16(d[2], d[3]);
-         g_rongjue_info.battery_current = cur_raw * 0.1f; /* example scale: 0.1 A/LSB */
+         ////g_rongjue_info.battery_current = cur_raw * 0.1f; /* example scale: 0.1 A/LSB */
       }
       break;
 
@@ -142,7 +142,7 @@ bool can_message_dispatcher(const CanQueueMsg_t *queue_msg)
       /* Battery SOC: byte5 = percentage (0-100) */
       if (dlc >= 6)
       {
-         g_rongjue_info.battery_soc = d[5];
+         ////g_rongjue_info.battery_soc = d[5];
       }
       break;
 
@@ -150,7 +150,7 @@ bool can_message_dispatcher(const CanQueueMsg_t *queue_msg)
       /* Battery fault: byte4-5 -> fault code (big-endian) */
       if (dlc >= 6)
       {
-         g_rongjue_info.battery_fault = be_u16(d[4], d[5]);
+         //// g_rongjue_info.battery_fault = be_u16(d[4], d[5]);
       }
       break;
 
@@ -160,7 +160,7 @@ bool can_message_dispatcher(const CanQueueMsg_t *queue_msg)
       if (dlc >= 4)
       {
          int16_t t_raw = be_i16(d[2], d[3]);
-         g_rongjue_info.battery_temp = t_raw * 0.1f;
+         ////g_rongjue_info.battery_temp = t_raw * 0.1f;
       }
       break;
 
@@ -171,15 +171,15 @@ bool can_message_dispatcher(const CanQueueMsg_t *queue_msg)
          ODO: "Byte6-7为里程值，byte7为高位，byte6为低位" => odo = (byte7<<8)|byte6 */
       if (dlc >= 8)
       {
-         g_rongjue_info.ready_on = (d[0] & 0x01) ? true : false;
+         //// g_rongjue_info.ready_on = (d[0] & 0x01) ? true : false;
 
          uint16_t rpm = be_u16(d[5], d[4]); /* byte5 high, byte4 low */
          /* Example conversion: if rpm is motor rpm, convert to speed with stub */
-         g_rongjue_info.speed_kmh = Calculate_Speed_From_RPM(rpm, 300 /*mm assume*/, 10 /*gear example*/);
+         ////g_rongjue_info.speed_kmh = Calculate_Speed_From_RPM(rpm, 300 /*mm assume*/, 10 /*gear example*/);
 
          uint16_t odo_raw = be_u16(d[7], d[6]); /* byte7 high, byte6 low */
          /* protocol doesn't state unit: store raw and as km */
-         g_rongjue_info.odometer_km = (uint32_t)odo_raw;
+         ////g_rongjue_info.odometer_km = (uint32_t)odo_raw;
       }
       break;
 
@@ -198,22 +198,22 @@ bool can_message_dispatcher(const CanQueueMsg_t *queue_msg)
          switch (v)
          {
          case 0x1:
-            g_rongjue_info.drive_mode = 1;
-            g_rongjue_info.gear = 0;
+            ////g_rongjue_info.drive_mode = 1;
+            ////g_rongjue_info.gear = 0;
             break; /* ECO */
          case 0x2:
-            g_rongjue_info.drive_mode = 2;
-            g_rongjue_info.gear = 0;
+            /// g_rongjue_info.drive_mode = 2;
+            /// g_rongjue_info.gear = 0;
             break; /* SPORT */
          case 0x3:
-            g_rongjue_info.gear = 'R';
+            /// g_rongjue_info.gear = 'R';
             break;
          case 0x7:
-            g_rongjue_info.gear = 'P';
+            /// g_rongjue_info.gear = 'P';
             break;
          case 0x4:
-            g_rongjue_info.drive_mode = 0;
-            g_rongjue_info.gear = 0;
+            ////g_rongjue_info.drive_mode = 0;
+            //// g_rongjue_info.gear = 0;
             break; /* Normal */
          default:  /* unknown */
             break;
@@ -229,20 +229,20 @@ bool can_message_dispatcher(const CanQueueMsg_t *queue_msg)
       {
          if (d[0] & 0x01)
          {
-            g_rongjue_info.ecu_fault_code = d[1];
+            ////g_rongjue_info.ecu_fault_code = d[1];
          }
          else
          {
-            g_rongjue_info.ecu_fault_code = 0;
+            ////g_rongjue_info.ecu_fault_code = 0;
          }
 
          if (d[2] & 0x01)
          {
-            g_rongjue_info.motor_fault_code = d[3];
+            ////g_rongjue_info.motor_fault_code = d[3];
          }
          else
          {
-            g_rongjue_info.motor_fault_code = 0;
+            ////g_rongjue_info.motor_fault_code = 0;
          }
       }
       break;
@@ -253,7 +253,7 @@ bool can_message_dispatcher(const CanQueueMsg_t *queue_msg)
       if (dlc >= 1)
       {
          /* store as km/h assuming instrument is in km/h; convert if needed */
-         g_rongjue_info.speed_kmh = (float)d[0];
+         ////g_rongjue_info.speed_kmh = (float)d[0];
       }
       break;
 
@@ -271,8 +271,8 @@ bool can_message_dispatcher(const CanQueueMsg_t *queue_msg)
          digits += (uint32_t)d[2] * 10u;                 /* byte2 tens */
          digits += (uint32_t)d[1];                       /* byte1 units */
          float odo_full = digits + ((float)d[0] * 0.1f); /* add decimal */
-         g_rongjue_info.odometer_float = odo_full;
-         g_rongjue_info.odometer_km = digits; /* integer part */
+         ////g_rongjue_info.odometer_float = odo_full;
+         ////g_rongjue_info.odometer_km = digits; /* integer part */
       }
       break;
 
@@ -286,7 +286,7 @@ bool can_message_dispatcher(const CanQueueMsg_t *queue_msg)
          float trip = trip_whole + ((float)d[0] * 0.1f);
          /* store to odometer_float temporarily or a separate trip field */
          /* for demo, store into odometer_float (replace with real trip field) */
-         g_rongjue_info.odometer_float = trip;
+         ////g_rongjue_info.odometer_float = trip;
       }
       break;
 

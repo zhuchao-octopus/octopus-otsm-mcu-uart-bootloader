@@ -205,7 +205,7 @@ bool system_send_handler(ptl_frame_type_t frame_type, uint16_t param1, uint16_t 
         }
         return false;
     }
-		
+
 #ifdef TASK_MANAGER_STATE_MACHINE_SOC
     // Handle commands for SOC_TO_MCU_MOD_SYSTEM frame type
     if (SOC_TO_MCU_MOD_SYSTEM == frame_type)
@@ -232,7 +232,7 @@ bool system_send_handler(ptl_frame_type_t frame_type, uint16_t param1, uint16_t 
             break;
         }
     }
-#endif		
+#endif
     return false; // Command not processed
 }
 
@@ -440,27 +440,27 @@ void system_power_onoff(bool onoff)
         LOG_LEVEL("Power on soc...\r\n");
         // system_delay_ms(5);
         gpio_power_on_off(true);
+		#ifdef TASK_MANAGER_STATE_MACHINE_CAN
+            CAN_Config();
+		#endif
         if (gpio_is_power_on())
         {
             g_mcu_state = MCU_POWER_ST_ON;
             LOG_LEVEL("Power on soc succesfully\r\n");
-#ifdef TASK_MANAGER_STATE_MACHINE_CAN
-            CAN_Config();
-#endif
         }
     }
     else
     {
-        // send_message(TASK_MODULE_PTL_1, MCU_TO_SOC_MOD_SYSTEM, FRAME_CMD_SYSTEM_POWER_OFF, 0);
-			#ifdef TASK_MANAGER_STATE_MACHINE_CARINFOR
-			  task_car_reset_trip();
+	   // send_message(TASK_MODULE_PTL_1, MCU_TO_SOC_MOD_SYSTEM, FRAME_CMD_SYSTEM_POWER_OFF, 0);
+#ifdef TASK_MANAGER_STATE_MACHINE_CARINFOR
+        task_car_reset_trip();
         flash_save_carinfor_meter();
-			#endif
-        LOG_LEVEL("Power down SOC... \r\n");
+#endif
+        LOG_LEVEL("Power down soc... \r\n");
         gpio_power_on_off(false);
         if (!gpio_is_power_on())
         {
-            LOG_LEVEL("Power down SOC succesfully\r\n");
+            LOG_LEVEL("Power down soc succesfully\r\n");
 #ifdef MCU_LOW_POWER_MODE
             g_mcu_state = MCU_POWER_ST_LOWPOWER;
             StartTickCounter(&l_t_msg_lowpower_wait_timer); // time out goto sleep
@@ -469,7 +469,7 @@ void system_power_onoff(bool onoff)
 #endif
         }
     }
-#endif
+#endif//TASK_MANAGER_STATE_MACHINE_GPIO
 }
 
 void system_mcu_goto_lowpower(void)
